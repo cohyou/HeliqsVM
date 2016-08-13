@@ -1,6 +1,6 @@
 [package]
 
-name = "hello_world"
+name = "HeliqsVM"
 version = "0.0.1"
 authors = [ "cohyou <cohyou@ironoir.io>" ]
 
