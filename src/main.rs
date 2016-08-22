@@ -49,6 +49,10 @@ fn show(m: &HashMap<i16, Vec<Briq>>) {
     // println!("{}", m);
 }
 
+fn show_with_big_endian(i: i64) {
+    println!("{}", i << 3);
+}
+
 fn main() {
     let mut m: HashMap<i16, Vec<Briq>> = HashMap::new();
 
@@ -59,7 +63,7 @@ fn main() {
         _ => println!("wowow!")
     }
 
-    println!("{}", 1 << 3);
+    show_with_big_endian(100);
 
     loop {
         print!("@|| ");
