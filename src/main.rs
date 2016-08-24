@@ -1,3 +1,5 @@
+extern crate byteorder;
+
 use std::io;
 use std::io::Write;
 use std::cmp::Ordering;
@@ -53,7 +55,17 @@ fn show_with_big_endian(i: i64) {
     println!("{}", i << 3);
 }
 
+use std::io::Cursor;
+use byteorder::{BigEndian, ReadBytesExt};
+
 fn main() {
+    let mut rdr = Cursor::new(vec![2, 5, 3, 0]);
+
+    // Note that we use type parameters
+    // to indicate which kind of byte order we want!
+    assert_eq!(517, rdr.read_u16::<BigEndian>().unwrap());
+    assert_eq!(768, rdr.read_u16::<BigEndian>().unwrap());
+
     let mut m: HashMap<i16, Vec<Briq>> = HashMap::new();
 
     let b = Briq::new();

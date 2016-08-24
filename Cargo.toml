@@ -7,3 +7,4 @@ authors = [ "cohyou <cohyou@ironoir.io>" ]
 [dependencies]
 
 rand = "0.3.14"
+byteorder = "0.5"
