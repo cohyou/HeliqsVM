@@ -80,10 +80,12 @@ fn main() {
 
     let b = Briq::new();
     m.insert(-1, vec![b]);
+    /*
     match m.get_mut(&-1) {
         Some(ref mut v) => v.push(Briq::new()),
         _ => println!("can not get -1 bucket!")
     }
+    */
 
     loop {
         print!("@|| ");
@@ -97,6 +99,10 @@ fn main() {
             "quit" => {
                 println!("bye!");
                 break;
+            },
+            "mkbc" => {
+                let b = Briq::new();
+                m.insert(0, vec![b]);
             },
             "show" => {
                 ; // do nothing
@@ -117,9 +123,15 @@ fn it_works() {
     let mut b2 = Briq::new();
     b2.set_l(65536);
     println!("l: {:?}", b2.l);
-    b2.set_h(65536*65536);
+    b2.set_h(65536 * 65536);
     println!("h: {:?}", b2.h);
 
     assert_eq!(b2.get_l(), 65536);
-    assert_eq!(b2.get_h(), 65536*65536);
+    assert_eq!(b2.get_h(), 65536 * 65536);
+
+    let mut iter = "A few words".split_whitespace();
+
+    assert_eq!(Some("A"), iter.next());
+    assert_eq!(Some("few"), iter.next());
+    assert_eq!(Some("words"), iter.next());
 }
