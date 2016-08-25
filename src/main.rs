@@ -2,12 +2,16 @@ extern crate byteorder;
 
 use std::io;
 use std::io::Write;
-use std::cmp::Ordering;
+// use std::cmp::Ordering;
 use std::collections::HashMap;
 
+// use std::io::Cursor;
+use byteorder::{BigEndian, ReadBytesExt, WriteBytesExt};
+
+// 16 bytes sequence
 struct Briq {
-    l: [i8; 8],
-    h: [i8; 8],
+    l: [u8; 8],
+    h: [u8; 8],
 }
 
 impl Briq {
@@ -29,6 +33,14 @@ impl Briq {
             s.push_str(format!("{:x}", i).as_str());
         }
         s.to_string()
+    }
+
+    fn set_l(&mut self, n: u64) {
+        (&mut(self.l)[..]).write_u64::<BigEndian>(n).unwrap();
+    }
+
+    fn set_h(&mut self, n: u64) {
+        (&mut(self.h)[..]).write_u64::<BigEndian>(n).unwrap();
     }
 }
 
@@ -55,17 +67,7 @@ fn show_with_big_endian(i: i64) {
     println!("{}", i << 3);
 }
 
-use std::io::Cursor;
-use byteorder::{BigEndian, ReadBytesExt};
-
 fn main() {
-    let mut rdr = Cursor::new(vec![2, 5, 3, 0]);
-
-    // Note that we use type parameters
-    // to indicate which kind of byte order we want!
-    assert_eq!(517, rdr.read_u16::<BigEndian>().unwrap());
-    assert_eq!(768, rdr.read_u16::<BigEndian>().unwrap());
-
     let mut m: HashMap<i16, Vec<Briq>> = HashMap::new();
 
     let b = Briq::new();
@@ -76,6 +78,10 @@ fn main() {
     }
 
     show_with_big_endian(100);
+
+    let mut b2 = Briq::new();
+    b2.set_l(65536);
+    println!("{:?}", b2.l);
 
     loop {
         print!("@|| ");
@@ -91,7 +97,7 @@ fn main() {
                 break;
             },
             "show" => {
-                ;// do nothing
+                ; // do nothing
             }
             _ => {
                 println!("you typed {}", guess);
@@ -100,4 +106,10 @@ fn main() {
 
         show(&m);
     }
+}
+
+#[test]
+#[should_panic(expected = "assertion failed")]
+fn it_works() {
+    assert_eq!("Hello", "world");
 }
