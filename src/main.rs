@@ -39,8 +39,16 @@ impl Briq {
         (&mut(self.l)[..]).write_u64::<BigEndian>(n).unwrap();
     }
 
+    fn get_l(&self) -> u64 {
+        (&(self.l)[..]).read_u64::<BigEndian>().unwrap()
+    }
+
     fn set_h(&mut self, n: u64) {
         (&mut(self.h)[..]).write_u64::<BigEndian>(n).unwrap();
+    }
+
+    fn get_h(&self) -> u64 {
+        (&(self.h)[..]).read_u64::<BigEndian>().unwrap()
     }
 }
 
@@ -74,14 +82,8 @@ fn main() {
     m.insert(-1, vec![b]);
     match m.get_mut(&-1) {
         Some(ref mut v) => v.push(Briq::new()),
-        _ => println!("wowow!")
+        _ => println!("can not get -1 bucket!")
     }
-
-    show_with_big_endian(100);
-
-    let mut b2 = Briq::new();
-    b2.set_l(65536);
-    println!("{:?}", b2.l);
 
     loop {
         print!("@|| ");
@@ -109,7 +111,15 @@ fn main() {
 }
 
 #[test]
-#[should_panic(expected = "assertion failed")]
 fn it_works() {
-    assert_eq!("Hello", "world");
+    show_with_big_endian(100);
+
+    let mut b2 = Briq::new();
+    b2.set_l(65536);
+    println!("l: {:?}", b2.l);
+    b2.set_h(65536*65536);
+    println!("h: {:?}", b2.h);
+
+    assert_eq!(b2.get_l(), 65536);
+    assert_eq!(b2.get_h(), 65536*65536);
 }
