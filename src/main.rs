@@ -8,6 +8,8 @@ use std::collections::HashMap;
 // use std::io::Cursor;
 use byteorder::{BigEndian, ReadBytesExt, WriteBytesExt};
 
+use std::option::Option;
+
 // 16 bytes sequence
 struct Briq {
     l: [u8; 8],
@@ -95,16 +97,18 @@ fn main() {
 
         io::stdin().read_line(&mut guess).expect("!!!! FAIL READ !!!!");
 
-        match guess.trim_right() {
-            "quit" => {
+        let mut token = guess.split_whitespace();
+
+        match token.next() {
+            Some("quit") => {
                 println!("bye!");
                 break;
             },
-            "mkbc" => {
+            Some("mkbc") => {
                 let b = Briq::new();
                 m.insert(0, vec![b]);
             },
-            "show" => {
+            Some("show") => {
                 ; // do nothing
             }
             _ => {
