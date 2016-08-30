@@ -106,7 +106,10 @@ fn main() {
             },
             Some("mkbc") => {
                 let b = Briq::new();
-                m.insert(0, vec![b]);
+                match token.next().unwrap().parse::<i16>() {
+                    Ok(n) => m.insert(n, vec![b]),
+                    _ => println!("invalid arg!")
+                }
             },
             Some("show") => {
                 ; // do nothing
