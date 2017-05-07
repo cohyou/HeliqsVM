@@ -2,69 +2,12 @@ extern crate byteorder;
 
 use std::io;
 use std::io::Write;
-// use std::cmp::Ordering;
 use std::collections::HashMap;
-
-// use std::io::Cursor;
-use byteorder::{BigEndian, ReadBytesExt, WriteBytesExt};
 
 use std::option::Option;
 
-// 16 bytes sequence
-struct Briq {
-    l: [u8; 8],
-    h: [u8; 8],
-}
-
-impl Briq {
-    fn new() -> Briq {
-        Briq { l: [0; 8], h: [0; 8] }
-    }
-
-    fn hex_l(&self) -> String {
-        let mut s = "0x".to_string();
-        for i in self.l.iter() {
-            s.push_str(format!("{:x}", i).as_str());
-        }
-        s.to_string()
-    }
-
-    fn hex_h(&self) -> String {
-        let mut s = "0x".to_string();
-        for i in self.h.iter() {
-            s.push_str(format!("{:x}", i).as_str());
-        }
-        s.to_string()
-    }
-
-    fn set_l(&mut self, n: u64) {
-        (&mut(self.l)[..]).write_u64::<BigEndian>(n).unwrap();
-    }
-
-    fn get_l(&self) -> u64 {
-        (&(self.l)[..]).read_u64::<BigEndian>().unwrap()
-    }
-
-    fn set_h(&mut self, n: u64) {
-        (&mut(self.h)[..]).write_u64::<BigEndian>(n).unwrap();
-    }
-
-    fn get_h(&self) -> u64 {
-        (&(self.h)[..]).read_u64::<BigEndian>().unwrap()
-    }
-}
-
-impl std::fmt::Display for Briq {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "({}, {})", "po", "pa")
-    }
-}
-
-impl std::fmt::Debug for Briq {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "({}, {})", self.hex_l(), self.hex_h())
-    }
-}
+mod briq;
+use briq::Briq;
 
 fn show(m: &HashMap<i16, Vec<Briq>>) {
     for (i, v) in m {
@@ -77,11 +20,47 @@ fn show_with_big_endian(i: i64) {
     println!("{}", i << 3);
 }
 
+mod category;
+use category::{Category, Bool, TRUE, FALSE};
+
+
+
+fn parse() {
+    let code = "a";
+    for c in code.chars() {
+        if c == " " {
+            continue;
+        } else if c == "(" {
+
+        } else if c == ")" {
+
+        } else {
+
+        }
+
+        println!("{}", c);
+    }
+}
+
 fn main() {
-    let mut m: HashMap<i16, Vec<Briq>> = HashMap::new();
+    // 101 5
+    // let mut integer1 = Category::<Bool>::new();
+    // integer1.addObj(TRUE);
+    // integer1.addObj(FALSE);
+    // integer1.addObj(TRUE);
+
+    // 110 6
+    // let mut integer2 = Category::<Bool>::new();
+    // integer2.addObj(TRUE);
+    // integer2.addObj(TRUE);
+    // integer2.addObj(FALSE);
+
+    parse();
+
+    let mut yards: HashMap<i16, Vec<Briq>> = HashMap::new();
 
     let b = Briq::new();
-    m.insert(-1, vec![b]);
+    yards.insert(-1, vec![b]);
     /*
     match m.get_mut(&-1) {
         Some(ref mut v) => v.push(Briq::new()),
@@ -107,8 +86,12 @@ fn main() {
             Some("mkbc") => {
                 let b = Briq::new();
                 match token.next().unwrap().parse::<i16>() {
-                    Ok(n) => m.insert(n, vec![b]),
-                    _ => println!("invalid arg!")
+                    Ok(n) => {
+                        yards.insert(n, vec![b]);
+                    },
+                    _ => {
+                        println!("invalid arg!");
+                    }
                 }
             },
             Some("show") => {
@@ -119,7 +102,7 @@ fn main() {
             }
         }
 
-        show(&m);
+        show(&yards);
     }
 }
 
