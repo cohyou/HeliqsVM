@@ -25,25 +25,6 @@ fn show_with_big_endian(i: i64) {
 // mod category;
 // use category::{Category, Bool, TRUE, FALSE};
 
-/*
-fn parse() {
-    let code = "a";
-    for c in code.chars() {
-        if c == " " {
-            continue;
-        } else if c == "(" {
-
-        } else if c == ")" {
-
-        } else {
-
-        }
-
-        println!("{}", c);
-    }
-}
-*/
-
 mod vm;
 
 fn main() {
