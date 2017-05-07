@@ -1,14 +1,15 @@
-extern crate byteorder;
+// extern crate byteorder;
 
-use std::io;
-use std::io::Write;
-use std::collections::HashMap;
+// use std::io;
+// use std::io::Write;
+// use std::collections::HashMap;
 
-use std::option::Option;
+// use std::option::Option;
 
-mod briq;
-use briq::Briq;
+// mod briq;
+// use briq::Briq;
 
+/*
 fn show(m: &HashMap<i16, Vec<Briq>>) {
     for (i, v) in m {
         println!("{}{:?}", i, v);
@@ -19,12 +20,12 @@ fn show(m: &HashMap<i16, Vec<Briq>>) {
 fn show_with_big_endian(i: i64) {
     println!("{}", i << 3);
 }
+*/
 
-mod category;
-use category::{Category, Bool, TRUE, FALSE};
+// mod category;
+// use category::{Category, Bool, TRUE, FALSE};
 
-
-
+/*
 fn parse() {
     let code = "a";
     for c in code.chars() {
@@ -41,8 +42,36 @@ fn parse() {
         println!("{}", c);
     }
 }
+*/
+
+mod vm;
 
 fn main() {
+    let mut v = vm::VM::new();
+
+    let i1 = v.make_dbr1(0);
+    v.edit_dbr1(i1, 1);
+
+    let i2 = v.make_lmbd(usize::max_value(), i1);
+    v.edit_lmbd_p(i2, 3);
+    v.edit_lmbd_q(i2, 4);
+
+    let i3 = v.make_int1(0);
+    v.edit_int1(i3, 1);
+
+    let i4 = v.make_appl(i2, usize::max_value());
+    v.edit_appl_p(i4, i2);
+    v.edit_appl_q(i4, i3);
+
+    let i5 = v.make_text("wowow");
+    v.edit_text(i5, "wowowow");
+
+    v.invalidate(i3);
+
+    v.make_int1(100);
+
+    v.show_target_tube();
+
     // 101 5
     // let mut integer1 = Category::<Bool>::new();
     // integer1.addObj(TRUE);
@@ -55,12 +84,15 @@ fn main() {
     // integer2.addObj(TRUE);
     // integer2.addObj(FALSE);
 
+    /*
     parse();
 
     let mut yards: HashMap<i16, Vec<Briq>> = HashMap::new();
 
     let b = Briq::new();
     yards.insert(-1, vec![b]);
+    */
+
     /*
     match m.get_mut(&-1) {
         Some(ref mut v) => v.push(Briq::new()),
@@ -68,6 +100,7 @@ fn main() {
     }
     */
 
+    /*
     loop {
         print!("@|| ");
         io::stdout().flush().unwrap();
@@ -104,8 +137,10 @@ fn main() {
 
         show(&yards);
     }
+    */
 }
 
+/*
 #[test]
 fn it_works() {
     show_with_big_endian(100);
@@ -125,3 +160,4 @@ fn it_works() {
     assert_eq!(Some("few"), iter.next());
     assert_eq!(Some("words"), iter.next());
 }
+*/
